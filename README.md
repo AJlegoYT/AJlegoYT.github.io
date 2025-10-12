@@ -1,10 +1,8 @@
-# AJlegoYT.github.io
-Click the helmet to make your clone army! Based off of Star Wars!
-<!DOCTYPE html>
+Subscribe to AJLEGO on YouTube!
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LEGO Clone Trooper Clicker</title>
     <style>
         * {
@@ -15,94 +13,148 @@ Click the helmet to make your clone army! Based off of Star Wars!
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        h1 {
-            margin: 20px 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            font-size: 2.5em;
         }
         
         .credit {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 0.9em;
+            top: 10px;
+            right: 10px;
+            font-size: 0.7em;
             font-weight: bold;
             color: rgba(255,255,255,0.8);
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             letter-spacing: 1px;
+            z-index: 100;
+        }
+        
+        h1 {
+            text-align: center;
+            padding: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-size: clamp(1.2em, 5vw, 2em);
         }
         
         .container {
             display: flex;
-            gap: 30px;
-            max-width: 1200px;
-            width: 100%;
-            flex-wrap: wrap;
+            flex: 1;
+            overflow: hidden;
+            gap: 10px;
+            padding: 10px;
+        }
+        
+        .middle-display {
+            flex: 2;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            min-height: 200px;
+        }
+        
+        .support-icon-display {
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            display: flex;
+            align-items: center;
             justify-content: center;
+        }
+        
+        .support-icon-display .icon {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+        
+        .support-icon-display .emoji-fallback {
+            font-size: 2.5em;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+        
+        .empty-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255,255,255,0.5);
+            font-size: 1.2em;
+            text-align: center;
+            width: 80%;
+        }
+        
+        .more-troopers {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffd700;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+        
+        .support-icon-display .count {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
         
         .clicker-section {
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
+            border-radius: 15px;
+            padding: 15px;
             text-align: center;
             flex: 1;
-            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
         
         .counter {
-            font-size: 3em;
+            font-size: clamp(2em, 8vw, 3em);
             font-weight: bold;
-            margin: 20px 0;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
         
         .brick {
-            width: 200px;
-            height: 200px;
+            width: clamp(120px, 30vw, 180px);
+            height: clamp(120px, 30vw, 180px);
             cursor: pointer;
             position: relative;
-            margin: 30px auto;
+            margin: 10px auto;
             transition: transform 0.2s ease, filter 0.2s ease;
-            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.6));
-            animation: idle-float 3s ease-in-out infinite;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.6));
             -webkit-user-drag: none;
         }
         
-        @keyframes idle-float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(2deg); }
-        }
-        
         .brick:hover {
-            transform: scale(1.15) translateY(-10px) !important;
-            filter: drop-shadow(0 15px 50px rgba(100,200,255,0.8)) 
-                    drop-shadow(0 0 30px rgba(255,255,255,0.5))
-                    brightness(1.1);
-            animation: none;
+            transform: scale(1.1);
+            filter: drop-shadow(0 8px 25px rgba(100,200,255,0.8)) brightness(1.1);
         }
         
         .brick:active {
-            transform: scale(0.92) !important;
-            filter: drop-shadow(0 5px 15px rgba(255,255,255,0.9))
-                    drop-shadow(0 0 20px rgba(100,200,255,1))
-                    brightness(1.2);
-            animation: none;
+            transform: scale(0.95);
+            filter: drop-shadow(0 3px 10px rgba(255,255,255,0.9)) brightness(1.2);
         }
         
         .helmet {
@@ -116,13 +168,8 @@ Click the helmet to make your clone army! Based off of Star Wars!
             height: 100%;
             object-fit: contain;
             filter: contrast(1.1) saturate(1.1);
-            background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
             pointer-events: none;
             -webkit-user-drag: none;
-            -khtml-user-drag: none;
-            -moz-user-drag: none;
-            -o-user-drag: none;
-            user-drag: none;
         }
         
         .helmet-image-fallback {
@@ -134,32 +181,69 @@ Click the helmet to make your clone army! Based off of Star Wars!
             font-size: 4em;
         }
         
+        .stats {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: clamp(0.8em, 2.5vw, 1em);
+        }
+        
+        .stat-line {
+            margin: 5px 0;
+        }
+        
+        .upgrades-container {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow: hidden;
+        }
+        
         .upgrades-section {
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 15px;
+            padding: 15px;
             flex: 1;
-            min-width: 300px;
-            max-height: 600px;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            overflow: visible;
+            position: relative;
         }
         
         .upgrades-section h2 {
-            margin-bottom: 20px;
-            font-size: 1.8em;
+            font-size: clamp(1em, 3vw, 1.5em);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .upgrades-list {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: visible;
+            position: relative;
         }
         
         .upgrade {
             background: rgba(255,255,255,0.15);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 8px 0;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             border: 2px solid transparent;
-            user-select: none;
+            font-size: clamp(0.7em, 2vw, 0.9em);
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1;
+        }
+        
+        .upgrade:hover {
+            z-index: 100;
         }
         
         .upgrade:hover:not(.disabled) {
@@ -173,50 +257,81 @@ Click the helmet to make your clone army! Based off of Star Wars!
         }
         
         .upgrade-title {
-            font-size: 1.3em;
             font-weight: bold;
-            margin-bottom: 5px;
+            flex: 1;
+        }
+        
+        .upgrade-details {
+            display: none;
+            position: absolute;
+            top: 0;
+            right: calc(100% + 10px);
+            width: 220px;
+            background: rgba(20,20,20,0.98);
+            padding: 12px;
+            border-radius: 8px;
+            z-index: 1000;
+            border: 2px solid #ffd700;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            color: white;
+            white-space: normal;
+        }
+        
+        .upgrade:hover .upgrade-details {
+            display: block;
         }
         
         .upgrade-desc {
-            font-size: 0.9em;
+            opacity: 1;
             margin: 5px 0;
-            opacity: 0.9;
+            font-size: 0.95em;
+            color: #ffffff;
         }
         
         .upgrade-cost {
-            font-size: 1.1em;
             color: #ffd700;
             font-weight: bold;
-            margin-top: 8px;
+            font-size: 1.2em;
+            margin-left: 10px;
         }
         
         .upgrade-owned {
-            font-size: 0.9em;
             color: #90EE90;
             margin-top: 5px;
+            font-size: 0.95em;
         }
         
-        .stats {
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        
-        .stat-line {
-            margin: 8px 0;
-            font-size: 1.1em;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+        .support-upgrade {
+            border-left: 3px solid #ffd700;
         }
         
         .trooper-icon {
             font-size: 2em;
-            animation: float 2s ease-in-out infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .clicker-section {
+                flex: 0 0 auto;
+                max-height: 40vh;
+            }
+            
+            .upgrades-container {
+                flex-direction: row;
+                flex: 1;
+            }
+            
+            .middle-display {
+                order: 3;
+            }
+            
+            .upgrade-details {
+                right: auto;
+                left: calc(100% + 10px);
+            }
         }
     </style>
 </head>
@@ -228,28 +343,36 @@ Click the helmet to make your clone army! Based off of Star Wars!
         <div class="clicker-section">
             <div class="trooper-icon">🪖</div>
             <div class="counter" id="trooperCount">0</div>
-            <div style="font-size: 1.2em; margin-bottom: 10px;">Clone Troopers</div>
+            <div style="font-size: clamp(0.9em, 2.5vw, 1.2em); margin: 5px 0;">Clone Troopers</div>
             
             <div class="brick" id="brick">
                 <div class="helmet">
                     <img src="https://i.imgur.com/PjHMSnO.jpeg" 
                          alt="Clone Trooper Helmet" 
                          class="helmet-image"
-                         onload="console.log('Image loaded successfully'); this.style.display='block';"
-                         onerror="console.log('Image failed to load'); this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="helmet-image-fallback" style="display:none;">🪖</div>
                 </div>
             </div>
             
             <div class="stats">
-                <div class="stat-line">Per Click: <span id="perClick">1</span> troopers</div>
-                <div class="stat-line">Per Second: <span id="perSecond">0</span> troopers</div>
+                <div class="stat-line">Per Click: <span id="perClick">1</span></div>
+                <div class="stat-line">Per Second: <span id="perSecond">0</span></div>
             </div>
         </div>
         
-        <div class="upgrades-section">
-            <h2>🛠️ Support</h2>
-            <div id="upgradesContainer"></div>
+        <div class="middle-display" id="middleDisplay"></div>
+        
+        <div class="upgrades-container">
+            <div class="upgrades-section">
+                <h2>🛠️ Support</h2>
+                <div class="upgrades-list" id="supportContainer"></div>
+            </div>
+            
+            <div class="upgrades-section">
+                <h2>⬆️ Upgrades</h2>
+                <div class="upgrades-list" id="upgradesContainer"></div>
+            </div>
         </div>
     </div>
 
@@ -264,81 +387,81 @@ Click the helmet to make your clone army! Based off of Star Wars!
                 id: 'click1',
                 name: 'Better Molds',
                 desc: '+1 click power',
-                baseCost: 15,
-                cost: 15,
+                baseCost: 10,
+                cost: 10,
                 owned: 0,
                 effect: () => { clickPower += 1; },
-                costMultiplier: 1.8
+                costMultiplier: 1.5
             },
             {
                 id: 'auto1',
                 name: 'Clone Cadets',
-                desc: '+1 trooper per second',
-                baseCost: 50,
-                cost: 50,
+                desc: '+1 trooper/sec',
+                baseCost: 25,
+                cost: 25,
                 owned: 0,
                 effect: () => {},
-                costMultiplier: 1.5
+                costMultiplier: 1.3
             },
             {
                 id: 'auto2',
                 name: 'Training Facility',
-                desc: '+5 troopers per second',
-                baseCost: 300,
-                cost: 300,
+                desc: '+5 troopers/sec',
+                baseCost: 150,
+                cost: 150,
                 owned: 0,
                 effect: () => {},
-                costMultiplier: 1.5
+                costMultiplier: 1.3
             },
             {
                 id: 'click2',
                 name: 'Advanced Assembly',
                 desc: '+5 click power',
-                baseCost: 1000,
-                cost: 1000,
+                baseCost: 500,
+                cost: 500,
                 owned: 0,
                 effect: () => { clickPower += 5; },
-                costMultiplier: 2
+                costMultiplier: 1.6
             },
             {
                 id: 'auto3',
                 name: 'Kamino Cloning Vats',
-                desc: '+25 troopers per second',
-                baseCost: 2000,
-                cost: 2000,
+                desc: '+25 troopers/sec',
+                baseCost: 1000,
+                cost: 1000,
                 owned: 0,
                 effect: () => {},
-                costMultiplier: 1.5
+                costMultiplier: 1.3
             },
             {
                 id: 'click3',
                 name: 'Mass Production',
                 desc: '+25 click power',
-                baseCost: 10000,
-                cost: 10000,
+                baseCost: 5000,
+                cost: 5000,
                 owned: 0,
                 effect: () => { clickPower += 25; },
-                costMultiplier: 2.5
+                costMultiplier: 1.8
             },
             {
                 id: 'auto4',
                 name: 'Clone Army Factory',
-                desc: '+100 troopers per second',
-                baseCost: 15000,
-                cost: 15000,
+                desc: '+100 troopers/sec',
+                baseCost: 7500,
+                cost: 7500,
                 owned: 0,
                 effect: () => {},
-                costMultiplier: 1.5
+                costMultiplier: 1.3
             },
             {
                 id: 'auto5',
                 name: 'Republic Armada',
-                desc: '+500 troopers per second',
-                baseCost: 75000,
-                cost: 75000,
+                desc: '+500 troopers/sec',
+                baseCost: 40000,
+                cost: 40000,
                 owned: 0,
                 effect: () => {},
-                costMultiplier: 1.5
+                costMultiplier: 1.3
             }
         ];
         
@@ -346,82 +469,83 @@ Click the helmet to make your clone army! Based off of Star Wars!
             {
                 id: 'support1',
                 name: 'Efficient Training',
-                desc: 'Clone Cadets produce 2x troopers',
-                baseCost: 500,
-                cost: 500,
+                desc: 'Clone Cadets 2x',
+                icon: '🎓',
+                baseCost: 250,
+                cost: 250,
                 owned: 0,
                 requires: 'auto1',
                 revealAt: 100,
                 upgradeId: 'auto1',
-                baseBonus: 1,
                 effect: () => {},
-                costMultiplier: 10
+                costMultiplier: 8
             },
             {
                 id: 'support2',
                 name: 'Enhanced Facilities',
-                desc: 'Training Facilities produce 2x troopers',
-                baseCost: 3000,
-                cost: 3000,
+                desc: 'Training Facilities 2x',
+                icon: '🏢',
+                baseCost: 1500,
+                cost: 1500,
                 owned: 0,
                 requires: 'auto2',
-                revealAt: 1000,
+                revealAt: 500,
                 upgradeId: 'auto2',
-                baseBonus: 5,
                 effect: () => {},
-                costMultiplier: 10
+                costMultiplier: 8
             },
             {
                 id: 'support3',
                 name: 'Optimized Cloning',
-                desc: 'Kamino Vats produce 2x troopers',
-                baseCost: 20000,
-                cost: 20000,
+                desc: 'Kamino Vats 2x',
+                icon: '🧬',
+                baseCost: 10000,
+                cost: 10000,
                 owned: 0,
                 requires: 'auto3',
-                revealAt: 5000,
+                revealAt: 2500,
                 upgradeId: 'auto3',
-                baseBonus: 25,
                 effect: () => {},
-                costMultiplier: 10
+                costMultiplier: 8
             },
             {
                 id: 'support4',
                 name: 'Automated Production',
-                desc: 'Clone Factories produce 2x troopers',
-                baseCost: 150000,
-                cost: 150000,
+                desc: 'Clone Factories 2x',
+                icon: '🏭',
+                baseCost: 75000,
+                cost: 75000,
                 owned: 0,
                 requires: 'auto4',
-                revealAt: 50000,
+                revealAt: 25000,
                 upgradeId: 'auto4',
-                baseBonus: 100,
                 effect: () => {},
-                costMultiplier: 10
+                costMultiplier: 8
             },
             {
                 id: 'support5',
                 name: 'Fleet Coordination',
-                desc: 'Republic Armadas produce 2x troopers',
-                baseCost: 750000,
-                cost: 750000,
+                desc: 'Republic Armadas 2x',
+                icon: '🚀',
+                baseCost: 400000,
+                cost: 400000,
                 owned: 0,
                 requires: 'auto5',
-                revealAt: 200000,
+                revealAt: 100000,
                 upgradeId: 'auto5',
-                baseBonus: 500,
                 effect: () => {},
-                costMultiplier: 10
+                costMultiplier: 8
             },
             {
                 id: 'support6',
                 name: 'Master Builder',
                 desc: '+10 click power',
-                baseCost: 15000,
-                cost: 15000,
+                icon: '🔨',
+                baseCost: 7500,
+                cost: 7500,
                 owned: 0,
                 requires: 'click2',
-                revealAt: 2500,
+                revealAt: 1250,
                 effect: () => { 
                     clickPower += 10;
                 },
@@ -433,7 +557,9 @@ Click the helmet to make your clone army! Based off of Star Wars!
         const trooperCount = document.getElementById('trooperCount');
         const perClick = document.getElementById('perClick');
         const perSecond = document.getElementById('perSecond');
-        const upgradesContainer = document.getElementById('upgradesContainer');
+        const upgradesContainer = document.getElementById('supportContainer');
+        const supportContainer = document.getElementById('upgradesContainer');
+        const middleDisplay = document.getElementById('middleDisplay');
         
         brick.addEventListener('click', () => {
             troopers += clickPower;
@@ -441,18 +567,6 @@ Click the helmet to make your clone army! Based off of Star Wars!
             updateDisplay();
             updateUpgrades();
         });
-        
-        function buyUpgrade(upgrade) {
-            if (troopers >= upgrade.cost) {
-                troopers -= upgrade.cost;
-                upgrade.owned++;
-                upgrade.effect();
-                upgrade.cost = Math.floor(upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.owned));
-                troopersPerSecond = calculateTroopersPerSecond();
-                updateDisplay();
-                updateUpgrades();
-            }
-        }
         
         function calculateTroopersPerSecond() {
             let total = 0;
@@ -478,6 +592,18 @@ Click the helmet to make your clone army! Based off of Star Wars!
             return total;
         }
         
+        function buyUpgrade(upgrade) {
+            if (troopers >= upgrade.cost) {
+                troopers -= upgrade.cost;
+                upgrade.owned++;
+                upgrade.effect();
+                upgrade.cost = Math.floor(upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.owned));
+                troopersPerSecond = calculateTroopersPerSecond();
+                updateDisplay();
+                updateUpgrades();
+            }
+        }
+        
         function buySupportUpgrade(upgrade) {
             if (troopers >= upgrade.cost) {
                 troopers -= upgrade.cost;
@@ -492,22 +618,26 @@ Click the helmet to make your clone army! Based off of Star Wars!
         
         function renderUpgrades() {
             upgradesContainer.innerHTML = '';
+            supportContainer.innerHTML = '';
             
             upgrades.forEach(upgrade => {
                 const div = document.createElement('div');
                 const canAfford = troopers >= upgrade.cost;
                 div.className = 'upgrade' + (canAfford ? '' : ' disabled');
+                
+                const icon = upgrade.id.includes('click') ? '👆' : '⚙️';
+                
                 div.innerHTML = `
-                    <div class="upgrade-title">${upgrade.name}</div>
-                    <div class="upgrade-desc">${upgrade.desc}</div>
-                    <div class="upgrade-cost">Cost: ${upgrade.cost.toLocaleString()} troopers</div>
-                    <div class="upgrade-owned">Owned: ${upgrade.owned}</div>
+                    <div class="upgrade-title">${icon} ${upgrade.name}</div>
+                    <div class="upgrade-cost">${upgrade.cost.toLocaleString()}</div>
+                    <div class="upgrade-details">
+                        <div class="upgrade-desc">${upgrade.desc}</div>
+                        <div class="upgrade-owned">Owned: ${upgrade.owned}</div>
+                    </div>
                 `;
                 
                 if (canAfford) {
-                    div.onclick = () => {
-                        buyUpgrade(upgrade);
-                    };
+                    div.onclick = () => buyUpgrade(upgrade);
                 }
                 
                 upgradesContainer.appendChild(div);
@@ -521,30 +651,84 @@ Click the helmet to make your clone army! Based off of Star Wars!
                 if (requirementMet && trooperThresholdMet) {
                     const div = document.createElement('div');
                     const canAfford = troopers >= upgrade.cost;
-                    div.className = 'upgrade' + (canAfford ? '' : ' disabled');
-                    div.style.borderLeft = '4px solid #ffd700';
+                    div.className = 'upgrade support-upgrade' + (canAfford ? '' : ' disabled');
                     div.innerHTML = `
-                        <div class="upgrade-title">🛠️ ${upgrade.name}</div>
-                        <div class="upgrade-desc">${upgrade.desc}</div>
-                        <div class="upgrade-cost">Cost: ${upgrade.cost.toLocaleString()} troopers</div>
-                        <div class="upgrade-owned">Owned: ${upgrade.owned}</div>
+                        <div class="upgrade-title">${upgrade.icon} ${upgrade.name}</div>
+                        <div class="upgrade-cost">${upgrade.cost.toLocaleString()}</div>
+                        <div class="upgrade-details">
+                            <div class="upgrade-desc">${upgrade.desc}</div>
+                            <div class="upgrade-owned">Owned: ${upgrade.owned}</div>
+                        </div>
                     `;
                     
                     if (canAfford) {
-                        div.onclick = () => {
-                            buySupportUpgrade(upgrade);
-                        };
+                        div.onclick = () => buySupportUpgrade(upgrade);
                     }
                     
-                    upgradesContainer.appendChild(div);
+                    supportContainer.appendChild(div);
                 }
             });
+        }
+        
+        let trooperPositions = [];
+        
+        function renderMiddleDisplay() {
+            const trooperCount = Math.floor(troopers);
+            const maxDisplay = 50;
+            const displayCount = Math.min(trooperCount, maxDisplay);
+            
+            // Generate new positions only if we need more
+            const containerWidth = middleDisplay.offsetWidth - 80;
+            const containerHeight = middleDisplay.offsetHeight - 100;
+            
+            while (trooperPositions.length < displayCount) {
+                trooperPositions.push({
+                    x: Math.random() * Math.max(containerWidth, 100),
+                    y: Math.random() * Math.max(containerHeight, 100)
+                });
+            }
+            
+            // Remove excess positions if trooper count decreased
+            if (trooperPositions.length > displayCount) {
+                trooperPositions = trooperPositions.slice(0, displayCount);
+            }
+            
+            middleDisplay.innerHTML = '';
+            
+            if (displayCount === 0) {
+                middleDisplay.innerHTML = '<div class="empty-message">Build your Clone Army!</div>';
+            } else {
+                for (let i = 0; i < displayCount; i++) {
+                    const trooperDiv = document.createElement('div');
+                    trooperDiv.className = 'support-icon-display';
+                    
+                    trooperDiv.style.left = trooperPositions[i].x + 'px';
+                    trooperDiv.style.top = trooperPositions[i].y + 'px';
+                    
+                    trooperDiv.innerHTML = `
+                        <img src="https://i.imgur.com/yILCffJ.png" 
+                             alt="Clone Trooper" 
+                             class="icon"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="emoji-fallback" style="display:none;">🪖</div>
+                    `;
+                    middleDisplay.appendChild(trooperDiv);
+                }
+                
+                if (trooperCount > maxDisplay) {
+                    const moreDiv = document.createElement('div');
+                    moreDiv.className = 'more-troopers';
+                    moreDiv.textContent = `+${trooperCount - maxDisplay} more!`;
+                    middleDisplay.appendChild(moreDiv);
+                }
+            }
         }
         
         function updateDisplay() {
             trooperCount.textContent = Math.floor(troopers).toLocaleString();
             perClick.textContent = clickPower.toLocaleString();
             perSecond.textContent = troopersPerSecond.toLocaleString();
+            renderMiddleDisplay();
         }
         
         function updateUpgrades() {
