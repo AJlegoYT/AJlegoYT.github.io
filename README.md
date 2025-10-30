@@ -20,10 +20,10 @@
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+            overflow: hidden;
         }
         
         .credit {
@@ -66,6 +66,7 @@
             overflow-y: auto;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             min-height: 200px;
+            position: relative;
         }
         
         .support-icon-display {
@@ -96,6 +97,48 @@
             font-size: 1.2em;
             text-align: center;
             width: 80%;
+        }
+        
+        .fact-popup {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(150%);
+            background: linear-gradient(135deg, rgba(255,215,0,0.95), rgba(255,165,0,0.95));
+            color: #000;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            border: 3px solid #ffd700;
+            z-index: 1000;
+            animation: slideUp 0.5s ease-out forwards, slideDown 0.5s ease-in 4.5s forwards;
+        }
+        
+        @keyframes slideUp {
+            to {
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
+        @keyframes slideDown {
+            to {
+                transform: translateX(-50%) translateY(150%);
+            }
+        }
+        
+        .fact-name {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+        }
+        
+        .fact-detail {
+            font-size: 0.85em;
+            opacity: 0.9;
         }
         
         .more-troopers {
@@ -333,6 +376,11 @@
                 right: auto;
                 left: calc(100% + 10px);
             }
+            
+            .fact-popup {
+                max-width: 90%;
+                font-size: 0.8em;
+            }
         }
     </style>
 </head>
@@ -378,10 +426,101 @@
     </div>
 
     <script>    
-    let totalTroopersProduced = 0;
+        let totalTroopersProduced = 0;
         let troopers = 0;
         let clickPower = 1;
         let troopersPerSecond = 0;
+        let characters = [];
+        let currentFactPopup = null;
+        
+        // Fallback character data
+        const fallbackCharacters = [
+            {"name":"Luke Skywalker","gender":"male","hair_color":"blond","height":"172","eye_color":"blue","birth_year":"19BBY"},
+            {"name":"Darth Vader","gender":"male","hair_color":"none","height":"202","eye_color":"yellow","birth_year":"41.9BBY"},
+            {"name":"Leia Organa","gender":"female","hair_color":"brown","height":"150","eye_color":"brown","birth_year":"19BBY"},
+            {"name":"Obi-Wan Kenobi","gender":"male","hair_color":"auburn, white","height":"182","eye_color":"blue-gray","birth_year":"57BBY"},
+            {"name":"Yoda","gender":"male","hair_color":"white","height":"66","eye_color":"brown","birth_year":"896BBY"},
+            {"name":"Han Solo","gender":"male","hair_color":"brown","height":"180","eye_color":"brown","birth_year":"29BBY"},
+            {"name":"Chewbacca","gender":"male","hair_color":"brown","height":"228","eye_color":"blue","birth_year":"200BBY"},
+            {"name":"Anakin Skywalker","gender":"male","hair_color":"blond","height":"188","eye_color":"blue","birth_year":"41.9BBY"},
+            {"name":"Palpatine","gender":"male","hair_color":"grey","height":"170","eye_color":"yellow","birth_year":"82BBY"},
+            {"name":"Padmé Amidala","gender":"female","hair_color":"brown","height":"185","eye_color":"brown","birth_year":"46BBY"},
+            {"name":"Mace Windu","gender":"male","hair_color":"none","height":"188","eye_color":"brown","birth_year":"72BBY"},
+            {"name":"Qui-Gon Jinn","gender":"male","hair_color":"brown","height":"193","eye_color":"blue","birth_year":"92BBY"},
+            {"name":"Boba Fett","gender":"male","hair_color":"black","height":"183","eye_color":"brown","birth_year":"31.5BBY"},
+            {"name":"Lando Calrissian","gender":"male","hair_color":"black","height":"177","eye_color":"brown","birth_year":"31BBY"},
+            {"name":"C-3PO","gender":"n/a","hair_color":"n/a","height":"167","eye_color":"yellow","birth_year":"112BBY"},
+            {"name":"R2-D2","gender":"n/a","hair_color":"n/a","height":"96","eye_color":"red","birth_year":"33BBY"},
+            {"name":"Darth Maul","gender":"male","hair_color":"none","height":"175","eye_color":"yellow","birth_year":"54BBY"},
+            {"name":"Jango Fett","gender":"male","hair_color":"black","height":"183","eye_color":"brown","birth_year":"66BBY"},
+            {"name":"Dooku","gender":"male","hair_color":"white","height":"193","eye_color":"brown","birth_year":"102BBY"},
+            {"name":"Rey","gender":"female","hair_color":"brown","height":"170","eye_color":"hazel","birth_year":"15ABY"},
+            {"name":"Finn","gender":"male","hair_color":"black","height":"178","eye_color":"brown","birth_year":"unknown"},
+            {"name":"Poe Dameron","gender":"male","hair_color":"black","height":"176","eye_color":"brown","birth_year":"2ABY"}
+        ];
+        
+        // Fetch Star Wars characters
+        async function loadCharacters() {
+            try {
+                const response = await fetch('https://swapi.online/api/characters');
+                const data = await response.json();
+                characters = data;
+                console.log('✅ Loaded', characters.length, 'Star Wars characters from API!');
+            } catch (error) {
+                console.log('⚠️ API fetch failed, using fallback character data');
+                characters = fallbackCharacters;
+            }
+        }
+        
+        loadCharacters();
+        
+        // Show random character fact
+        function showCharacterFact() {
+            if (characters.length === 0) return;
+            
+            // Remove existing popup if any
+            if (currentFactPopup) {
+                currentFactPopup.remove();
+            }
+            
+            const randomChar = characters[Math.floor(Math.random() * characters.length)];
+            
+            const popup = document.createElement('div');
+            popup.className = 'fact-popup';
+            
+            const details = [];
+            if (randomChar.birth_year && randomChar.birth_year !== 'unknown') {
+                details.push(`Born: ${randomChar.birth_year}`);
+            }
+            if (randomChar.height && randomChar.height !== 'unknown') {
+                details.push(`Height: ${randomChar.height}cm`);
+            }
+            if (randomChar.gender && randomChar.gender !== 'unknown' && randomChar.gender !== 'n/a') {
+                details.push(`Gender: ${randomChar.gender}`);
+            }
+            if (randomChar.hair_color && randomChar.hair_color !== 'n/a' && randomChar.hair_color !== 'unknown') {
+                details.push(`Hair: ${randomChar.hair_color}`);
+            }
+            if (randomChar.eye_color && randomChar.eye_color !== 'unknown') {
+                details.push(`Eyes: ${randomChar.eye_color}`);
+            }
+            
+            popup.innerHTML = `
+                <div class="fact-name">⭐ ${randomChar.name} ⭐</div>
+                <div class="fact-detail">${details.slice(0, 2).join(' • ')}</div>
+            `;
+            
+            document.body.appendChild(popup);
+            currentFactPopup = popup;
+            
+            // Remove after animation completes
+            setTimeout(() => {
+                if (popup.parentNode) {
+                    popup.remove();
+                }
+                currentFactPopup = null;
+            }, 5000);
+        }
         
         const upgrades = [
             {
@@ -553,20 +692,7 @@
                 costMultiplier: 3
             }
         ];
-        async function fetchCloneTroopers() {
-  try {
-    const response = await fetch('https://your-api-url.com/api/clone-troopers', {
-      headers: {
-        'Authorization': 'Bearer 9bc00402602a6690424be45a1d7acf9a011b1a22'
-      }
-    });
-    const data = await response.json();
-    console.log('Clone Trooper Data:', data);
-    // You can now use this data to populate your game
-  } catch (error) {
-    console.error('Failed to fetch clone troopers:', error);
-  }
-}
+        
         const brick = document.getElementById('brick');
         const trooperCount = document.getElementById('trooperCount');
         const perClick = document.getElementById('perClick');
@@ -578,7 +704,6 @@
         brick.addEventListener('click', () => {
             troopers += clickPower;
             totalTroopersProduced += clickPower;
-            fetchCloneTroopers();
             updateDisplay();
             updateMiddleDisplayIfNeeded();
             updateUpgrades();
@@ -618,6 +743,11 @@
                 updateDisplay();
                 updateMiddleDisplayIfNeeded();
                 updateUpgrades();
+                
+                // Show character fact on major upgrades
+                if (upgrade.owned === 1 || upgrade.owned % 5 === 0) {
+                    showCharacterFact();
+                }
             }
         }
         
@@ -631,6 +761,9 @@
                 updateDisplay();
                 updateMiddleDisplayIfNeeded();
                 updateUpgrades();
+                
+                // Always show character fact on support upgrades
+                showCharacterFact();
             }
         }
         
@@ -692,8 +825,6 @@
             });
         }
         
-        let trooperPositions = [];
-        
         function renderMiddleDisplay() {
             middleDisplay.innerHTML = '';
             
@@ -734,6 +865,13 @@
         }
         
         let lastAffordableState = [...upgrades, ...supportUpgrades].map(u => troopers >= u.cost);
+        
+        // Show random facts periodically
+        setInterval(() => {
+            if (troopers >= 50 && Math.random() < 0.3) {
+                showCharacterFact();
+            }
+        }, 15000);
         
         let lastUpdateTime = Date.now();
         setInterval(() => {
