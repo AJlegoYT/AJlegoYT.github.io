@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -383,11 +382,6 @@
             }
         }
     </style>
-</head>
-<body>
-    <div class="credit">MADE BY AJ LEGO</div>
-    <h1>🧱 LEGO Clone Trooper Clicker 🧱</h1>
-    
     <div class="container">
         <div class="clicker-section">
             <div class="trooper-icon">🪖</div>
